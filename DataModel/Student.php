@@ -82,6 +82,24 @@ WHERE `studyfield_subjects`.`StudyfieldID` = $studyFieldId");
        }
     }
 
+    /**
+     * @return SubjectPass[]
+     */
+    public function getSubjectPass(){
+       $studentPassesRaw =  getCommand(
+           "SELECT `Name`,`Mark`,`Status`,`Computers`,`Lectures`,`Exercises`,`Laboratories` FROM `subjectpass`
+                      INNER JOIN `subjects` ON `subjects`.`ID` = `subjectpass`.`SubjectID`
+                      WHERE `StudentID` = 3 ");
+       $studentPasses = [];
+       foreach ($studentPassesRaw as $item){
+           $studentPass = new SubjectPass();
+           $studentPass->readFromDB($item);
+           array_push($studentPasses, $studentPass);
+       }
+
+       return $studentPasses;
+    }
+
     public function moveToNextTerm()
     {
         putCommand("UPDATE `dziekanat`.`students` SET `Term` = '1' WHERE `students`.`ID` =".$this->getId());

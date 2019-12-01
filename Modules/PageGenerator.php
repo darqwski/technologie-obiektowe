@@ -12,6 +12,8 @@ function includeAll(){
     include_once  $_SERVER['DOCUMENT_ROOT']."/DataModel/PersonInterface.php";
     include_once  $_SERVER['DOCUMENT_ROOT']."/DataModel/Recrutant.php";
     include_once  $_SERVER['DOCUMENT_ROOT']."/DataModel/ServerState.php";
+    include_once  $_SERVER['DOCUMENT_ROOT']."/DataModel/SubjectPass.php";
+    include_once  $_SERVER['DOCUMENT_ROOT']."/DataModel/Subject.php";
     include_once  $_SERVER['DOCUMENT_ROOT']."/DatabaseManager/LoginDatabase.php";
 }
 

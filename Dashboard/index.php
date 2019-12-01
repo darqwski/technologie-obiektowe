@@ -36,6 +36,9 @@ if(isset($_POST['mockStudent'])){
 if($currentSession->getUserType() == 'employee'){
     echo '<a href="../Recrutation/Recruiter"> Panel rektutacji</a>';
 }
+if($currentSession->getUserType() == 'student'){
+    echo '<a href="../Passes"> Panel zaliczeń przedmiotowych</a>';
+}
 if($currentSession->getUserType() == 'employee'){
     echo '<a href="../ServerState"> Panel zarządzania okresami studiów</a>';
 }
