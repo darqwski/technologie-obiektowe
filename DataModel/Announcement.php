@@ -171,7 +171,6 @@ WHERE `announcements`.`PersonID` = '$id'
     public static function saveAnnouncement($text,$personId){
         $session = new Session();
         $employee = new Employee();
-        print_r($_SESSION);
         $employee->setId($session->getID());
         $person = new Person();
         $person->setPersonID($personId);

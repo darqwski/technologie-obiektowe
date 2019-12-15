@@ -8,7 +8,7 @@
 
 class Subject implements DBInterface
 {
- private $name, $computers, $laboratories, $lectures, $exercises;
+ private $name, $computers, $laboratories, $lectures, $exercises, $id;
 
     /**
      * @return String
@@ -75,11 +75,26 @@ class Subject implements DBInterface
     }
 
     /**
-     * @return Integer
+     * @return integer
      */
     public function getExercises()
     {
         return $this->exercises;
+    }
+    /**
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @param integer $id
+     */
+    public function setId($id)
+    {
+        $this->id = $id;
     }
 
     /**
@@ -103,7 +118,9 @@ class Subject implements DBInterface
         $this->setExercises($row['Exercises']);
         $this->setLaboratories($row['Laboratories']);
         $this->setLectures($row['Lectures']);
+        $this->setId($row['ID']);
     }
+
 
 
 }

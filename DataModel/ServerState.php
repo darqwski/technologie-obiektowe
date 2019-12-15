@@ -20,6 +20,7 @@ define("SUMMERTERM","SUMMERTERM");
 define("SUMMERSESSION1","SUMMERSESSION1");
 define("SUMMERSESSION2","SUMMERSESSION2");
 define("SUMMERSESSION3","SUMMERSESSION3");
+define("PAUSE","PAUSE");
 class ServerState
 {
 
@@ -242,6 +243,16 @@ AND (`Type`='NORECRUTATION' OR`Type`='RECRUTATION1' OR `Type`='RECRUTATION2' OR 
                 self::startState(SUMMERSESSION2);
                 break;
         }
+    }
+
+    public static function getTerm(){
+       $winterTerm = self::inState(WINTERTERM) || self::inState(WINTERSESSION1) ||  self::inState(WINTERSESSION2);
+       $summerTerm = self::inState(SUMMERTERM) || self::inState(SUMMERSESSION1) ||  self::inState(SUMMERSESSION2);
+        if($winterTerm)
+            return WINTERTERM;
+        if($summerTerm)
+            return SUMMERTERM;
+        return PAUSE;
     }
 
 }

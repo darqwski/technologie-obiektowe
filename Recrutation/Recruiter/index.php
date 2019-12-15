@@ -11,7 +11,7 @@ includeAll();
 
 if(isset($_POST['recrutation'])){
     $registration = new Recrutation();
-    $registration->setRecrutationData(['numberOfPlaces'=>'0','studyfield'=>'1']);
+    $registration->setRecrutationData(['numberOfPlaces'=>'7','studyfield'=>'1']);
     $registration->doRecrutation();
     $approvedStudents = $registration->getStudentApproved();
     foreach ($approvedStudents as $student){

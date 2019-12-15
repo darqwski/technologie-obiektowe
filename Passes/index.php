@@ -12,7 +12,9 @@ includeAll();
 $currentSession = new Session();
 $currentUser = new Student();
 $currentUser->getPersonByID($currentSession->getUserID());
-
+if(isset($_POST['subjectID'])){
+    $currentUser->takeCourseRetake($_POST['subjectID']);
+}
 $passes = $currentUser->getSubjectPass();
 echo '<table>';
 foreach ($passes as $subjectPass){
@@ -20,8 +22,22 @@ foreach ($passes as $subjectPass){
 <tr>
     <td>".$subjectPass->getName()."</td>
     <td>".$subjectPass->getStringStatus()."</td>
+    
 </tr>
    ";
+   if($subjectPass->getStatus() == FAILED){
+      echo "
+    <tr>
+        <td>
+        <form method='post'>
+            <input type='hidden' name='subjectID' value='".$subjectPass->getId()."'/>
+            <button>Weź waruneczek</button>
+        </form>
+</td>
+
+    </tr>";
+   }
+
 }
 echo '</table>';
 

@@ -13,10 +13,12 @@ session_start();
 if(isset($_GET['logout'])){
     session_destroy();
 }
+print_r($_POST);
+
 if(isset($_POST['login'])){
     if(isset($_POST['password'])){
         $person = getCommand("SELECT * FROM `persons` WHERE `Login` = '$_POST[login]' AND `Password` = '".md5($_POST['password'])."'")[0];
-
+        print_r($person);
         if($person){
             switch ($person['userType']){
                 case 'employee':
@@ -37,6 +39,12 @@ if(isset($_POST['login'])){
                     Session::setSession($student);
                     header('Location: ../Dashboard/');
                     break;
+                case 'teacher':
+                    $teacher = new Teacher();
+                    $teacher->getPersonByID($person['ID']);
+                    Session::setSession($teacher);
+                    header('Location: ../Dashboard/');
+                    break;
             }
         }
         else {
@@ -54,7 +62,7 @@ else {
 $session = new Session();
 
 ?>
-
+????
 <form action="" method="post">
    Login <input name="login" />
    Hasło <input name="password" type="password" />

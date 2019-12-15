@@ -7,7 +7,8 @@
  */
 
 include_once  $_SERVER['DOCUMENT_ROOT']."/DataModel/Subject.php";
-
+define("FAILED",-1);
+define("CONDITIONAL_CREDIT",2);
 
 class SubjectPass extends Subject
 {
@@ -53,6 +54,8 @@ class SubjectPass extends Subject
                 return 'Passed';
             case -1:
                 return 'Failed';
+            case 2:
+                return 'Conditional Credit ';
         }
     }
     public function saveToDB()

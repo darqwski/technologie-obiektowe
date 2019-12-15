@@ -46,6 +46,10 @@ else if($currentSession->getUserType() == 'recruitant'){
     echo '<a href="../Recrutation/Recrutant"> Panel rektutacji</a>';
 }
 
+else if($currentSession->getUserType() == 'teacher'){
+    echo '<a href="../Passes/CreateSubjectPass>"> Moduł przyznawania zaliczeń</a>';
+}
+
 if($currentSession->getUserType() == 'employee'){
     echo "
         <form method='post'>

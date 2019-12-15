@@ -164,7 +164,8 @@ class Person implements JsonSerializable, PersonInterface
     public function getPersonByID($id)
     {
         $data = getCommand("
-      SELECT ".$this->getTableName().".*, persons.Name, persons.Surname,persons.userType,persons.Login,persons.ID as PersonID FROM ".$this->getTableName()."
+      SELECT ".$this->getTableName().".*, persons.Name, persons.Surname,persons.userType,persons.Login,persons.ID as PersonID 
+      FROM ".$this->getTableName()."
       INNER JOIN persons ON persons.id = ".$this->getTableName().".PersonID
       WHERE PersonID = '$id'");
 
@@ -187,7 +188,7 @@ class Person implements JsonSerializable, PersonInterface
 
     public function getUserType()
     {
-        // TODO: Implement getUserType() method.
+        return 'person';
     }
 
     public function readFromDB($row)

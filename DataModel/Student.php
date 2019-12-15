@@ -10,6 +10,23 @@ class Student extends Person
 {
     private $isStudent;
     private $studyField;
+    private $term;
+
+    /**
+     * @return integer
+     */
+    public function getTerm()
+    {
+        return $this->term;
+    }
+
+    /**
+     * @param integer $term
+     */
+    public function setTerm($term)
+    {
+        $this->term = $term;
+    }
 
     /**
      * @return bool
@@ -52,6 +69,7 @@ class Student extends Person
     {
         $this->readPersonFromDB($row);
         $this->setIsStudent($row['isStudent'] == 1);
+        $this->setTerm($row['Term']);
         $this->setStudyField(Studyfield::getStudyfieldByID($row['Studyfield']));
     }
 
@@ -87,9 +105,11 @@ WHERE `studyfield_subjects`.`StudyfieldID` = $studyFieldId");
      */
     public function getSubjectPass(){
        $studentPassesRaw =  getCommand(
-           "SELECT `Name`,`Mark`,`Status`,`Computers`,`Lectures`,`Exercises`,`Laboratories` FROM `subjectpass`
+           "SELECT `subjects`.`ID`,`Name`,`Mark`,`Status`,`Computers`,`Lectures`,`Exercises`,`Laboratories` FROM `subjectpass`
                       INNER JOIN `subjects` ON `subjects`.`ID` = `subjectpass`.`SubjectID`
-                      WHERE `StudentID` = 3 ");
+                      INNER JOIN `studyfield_subjects` ON `subjects`.`ID` = `studyfield_subjects`.`SubjectID`
+                      WHERE `StudentID` = '".$this->getId()."' AND `Term` = '".$this->getTerm()."'");
+
        $studentPasses = [];
        foreach ($studentPassesRaw as $item){
            $studentPass = new SubjectPass();
@@ -105,4 +125,9 @@ WHERE `studyfield_subjects`.`StudyfieldID` = $studyFieldId");
         putCommand("UPDATE `dziekanat`.`students` SET `Term` = '1' WHERE `students`.`ID` =".$this->getId());
     }
 
+    public function takeCourseRetake($subjectID){
+        putCommand("INSERT INTO `courseretakes` (`ID`, `StudentID`, `SubjectID`, `Date`, `Paid`) VALUES (NULL, '".$this->getId()."', '$subjectID', NOW(), '0');");
+        $subjectPass= getCommand("SELECT * FROM `subjectpass` WHERE StudentID='".$this->getId()."' AND SubjectID = $subjectID")[0];
+        putCommand("UPDATE `dziekanat`.`subjectpass` SET `Status` = '2' WHERE `subjectpass`.`ID` =$subjectPass[ID];");
+        putCommand("INSERT INTO `dziekanat`.`subjectpass` (`ID` ,`StudentID` ,`SubjectID` ,`Mark` ,`TeacherID` ,`Status`)VALUES (NULL , '".$this->getId()."', '$subjectID', '0', '0', '0');");}
 }
