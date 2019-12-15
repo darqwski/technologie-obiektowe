@@ -87,28 +87,30 @@ class Student extends Person
 
     public function generateStudentPasses(){
        $studyFieldId = $this->getStudyField()->getId();
-       $subjectsID = getCommand("
-SELECT `subjects`.`id` from `studyfield_subjects` 
+       $subjects = getCommand("
+SELECT `subjects`.`id`,`studyfield_subjects`.`Term` from `studyfield_subjects` 
 INNER JOIN `subjects` ON `studyfield_subjects`.`SubjectID` = `subjects`.`ID` 
 WHERE `studyfield_subjects`.`StudyfieldID` = $studyFieldId");
        $studentID = $this->getId();
-        foreach ($subjectsID as $subjectID) {
-            $subjectID=$subjectID['id'];
-            insertCommand("INSERT INTO `dziekanat`.`subjectpass` 
-                (`ID`, `StudentID`, `SubjectID`, `Mark`, `TeacherID`, `Status`) 
-                VALUES (NULL, '$studentID', '$subjectID', '0', '', '0');");
-       }
+
+        foreach ($subjects as $subject) {
+            insertCommand("INSERT INTO `dziekanat`.`subjectpass`
+                (`ID`, `StudentID`, `SubjectID`, `Mark`, `TeacherID`, `Status`, `Term`)
+                VALUES (NULL, '$studentID', '$subject[id]', '0', '', '0','$subject[Term]');");
+
+        }
     }
 
     /**
      * @return SubjectPass[]
      */
     public function getSubjectPass(){
+
        $studentPassesRaw =  getCommand(
            "SELECT `subjects`.`ID`,`Name`,`Mark`,`Status`,`Computers`,`Lectures`,`Exercises`,`Laboratories` FROM `subjectpass`
                       INNER JOIN `subjects` ON `subjects`.`ID` = `subjectpass`.`SubjectID`
                       INNER JOIN `studyfield_subjects` ON `subjects`.`ID` = `studyfield_subjects`.`SubjectID`
-                      WHERE `StudentID` = '".$this->getId()."' AND `Term` = '".$this->getTerm()."'");
+                      WHERE `StudentID` = '".$this->getId()."' AND subjectpass.`Term` = '".$this->getTerm()."'");
 
        $studentPasses = [];
        foreach ($studentPassesRaw as $item){
@@ -129,5 +131,5 @@ WHERE `studyfield_subjects`.`StudyfieldID` = $studyFieldId");
         putCommand("INSERT INTO `courseretakes` (`ID`, `StudentID`, `SubjectID`, `Date`, `Paid`) VALUES (NULL, '".$this->getId()."', '$subjectID', NOW(), '0');");
         $subjectPass= getCommand("SELECT * FROM `subjectpass` WHERE StudentID='".$this->getId()."' AND SubjectID = $subjectID")[0];
         putCommand("UPDATE `dziekanat`.`subjectpass` SET `Status` = '2' WHERE `subjectpass`.`ID` =$subjectPass[ID];");
-        putCommand("INSERT INTO `dziekanat`.`subjectpass` (`ID` ,`StudentID` ,`SubjectID` ,`Mark` ,`TeacherID` ,`Status`)VALUES (NULL , '".$this->getId()."', '$subjectID', '0', '0', '0');");}
+        putCommand("INSERT INTO `dziekanat`.`subjectpass` (`ID` ,`StudentID` ,`SubjectID` ,`Mark` ,`TeacherID` ,`Status`, `Term`)VALUES (NULL , '".$this->getId()."', '$subjectID', '0', '0', '0','".($subjectPass['Term']+2)."');");}
 }

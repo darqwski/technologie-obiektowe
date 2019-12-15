@@ -36,7 +36,7 @@ INNER JOIN persons ON students.personid = persons.id
 INNER JOIN studyfield_subjects ON studyfield_subjects.subjectid = subjectpass.subjectid
 WHERE Status = 0 
 AND leadings.teacherid = ".$this->getId()." 
-AND studyfield_subjects.term = students.term
+AND subjectpass.term = students.term
 AND leadings.type = 'LEC'
 ");
     }
