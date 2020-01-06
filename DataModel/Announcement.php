@@ -149,7 +149,6 @@ class Announcement implements JsonSerializable
     VALUES (
       NULL ,'$this->text' , NOW(), 0, ".$this->getEmployee()->getId().", ".$this->getPerson()->getPersonID().", 0
     )";
-        echo $query;
         putCommand($query);
     }
 
@@ -165,6 +164,7 @@ INNER JOIN `employees` ON `employees`.`ID` = `announcements`.`EmployeeID`
 INNER JOIN `persons` ON `persons`.`ID` = `employees`.`PersonID`
 WHERE `announcements`.`PersonID` = '$id' 
         ");
+
         return array_map(function ($announcement){return self::getAnnouncementFromData($announcement);},$data);
     }
 

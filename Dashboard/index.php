@@ -47,7 +47,7 @@ else if($currentSession->getUserType() == 'recruitant'){
 }
 
 else if($currentSession->getUserType() == 'teacher'){
-    echo '<a href="../Passes/CreateSubjectPass>"> Moduł przyznawania zaliczeń</a>';
+    echo '<a href="../Passes/CreateSubjectPass"> Moduł przyznawania zaliczeń</a>';
 }
 
 if($currentSession->getUserType() == 'employee'){

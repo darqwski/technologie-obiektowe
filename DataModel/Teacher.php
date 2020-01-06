@@ -37,7 +37,7 @@ INNER JOIN studyfield_subjects ON studyfield_subjects.subjectid = subjectpass.su
 WHERE Status = 0 
 AND leadings.teacherid = ".$this->getId()." 
 AND subjectpass.term = students.term
-AND leadings.type = 'LEC'
+AND leadings.type = 'LAB'
 ");
     }
 }

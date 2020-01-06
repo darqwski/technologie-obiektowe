@@ -20,6 +20,14 @@ if(isset($_POST['recrutation'])){
                 $student->getPersonID()
         );
     }
+    $unapprovedStudents = $registration->getStudentInRecrutation();
+    foreach ($unapprovedStudents as $student){
+        Announcement::saveAnnouncement(
+            "Niestety, nie zostałeś przyjęty. Dalej jesteś w procesie rekrutacji, więc jeśli się dostaniesz, poinforumujemy Cię o tym",
+            $student->getPersonID()
+        );
+    }
+
     ServerState::moveRecrutation();
 
 }
